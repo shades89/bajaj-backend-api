@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backend API Frontend</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    input, button { margin: 10px 0; padding: 8px; width: 300px; }
+    #response { margin-top: 20px; padding: 10px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>Backend API Interaction</h1>
+
+  <!-- Form to send POST request -->
+  <h3>Send POST request:</h3>
+  <form id="postForm">
+    <input type="text" id="dataInput" placeholder="Enter comma-separated values (e.g. 1,a,2,b)">
+    <button type="submit">Send POST</button>
+  </form>
+
+  <!-- Button to trigger GET request -->
+  <h3>Send GET request:</h3>
+  <button id="getRequestBtn">Send GET Request</button>
+
+  <!-- Div to display the response -->
+  <div id="response"></div>
+
+  <script>
+    document.getElementById('postForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const data = document.getElementById('dataInput').value.split(',');
+
+      const response = await fetch('/api/bfhl', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data })
+      });
+
+      const result = await response.json();
+      document.getElementById('response').innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+    });
+
+    document.getElementById('getRequestBtn').addEventListener('click', async function () {
+      const response = await fetch('/api/bfhl');
+      const result = await response.json();
+      document.getElementById('response').innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+    });
+  </script>
+</body>
+</html>
